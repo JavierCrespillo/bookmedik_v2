@@ -1,0 +1,36 @@
+version: '3.1'
+
+
+services:
+
+  db2:
+    container_name: mariadb2
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: bookmedik
+      MARIADB_USER: bookmedik
+      MARIADB_PASSWORD: bookmedik
+    volumes:
+      - db2:/var/lib/mysql
+
+
+  bookmedik2:
+    container_name: bookmedik2
+    image: crespillo/bookmedik:v2
+    restart: always
+    environment:
+      USER: bookmedik
+      PASSWD: bookmedik
+      HOST: db2
+      DATABASE: bookmedik
+    ports:
+      - 8081:80
+    depends_on:
+      - db2
+
+
+
+volumes:
+    db2:
